@@ -1,0 +1,2 @@
+Web Socket creado con Spring Boot y consumido desde un cliente utilizando la última versión de Angular
+Java 17 
