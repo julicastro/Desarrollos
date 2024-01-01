@@ -1,0 +1,10 @@
+1. Install Java, Maven, Intellij
+2. Install Docker Desktop - Docker Runtime Engine
+3. Created Spring Boot Application
+4. Import to Intellij
+5. Create REST Endpoint
+6. Create Docker File
+7. Create Docker Image
+8. Push Docker Image to DockerHub
+9. Pull Docker Image from DockerHub repository
+10. Run the pulled Docker Image in our local computer

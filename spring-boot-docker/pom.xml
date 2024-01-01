@@ -36,6 +36,9 @@
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
 		</plugins>
+		<!-- clean/install maven => creates a jar with name = app -->
+		<finalName>app</finalName>
+
 	</build>
 
 </project>
