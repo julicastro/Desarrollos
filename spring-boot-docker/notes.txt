@@ -5,6 +5,18 @@
 5. Create REST Endpoint
 6. Create Docker File
 7. Create Docker Image
+   a. login on locker
+   docker build -t app-image . -> creear
+   docker images -> ver
 8. Push Docker Image to DockerHub
+   a. crear repo en docker
+   b. docker tag app-image julicastro/app-image
+   b1. docker tag app-image:latest julicastro/app-image:v3
+   c.  docker push julicastro/app-image -> default latest
 9. Pull Docker Image from DockerHub repository
 10. Run the pulled Docker Image in our local computer
+   a. docker run -p 8090:8080 julicastro/app-image:latest -> la app en el container esta 8080.
+   y vos la expones al 8090 en tu local
+   b. docker ps -> show containers running
+   c. docker run -p 8091:8080 julicastro/app-image:v3 -> corre en otro puerto y otra version
+   d. docker kill id-> kill version running
