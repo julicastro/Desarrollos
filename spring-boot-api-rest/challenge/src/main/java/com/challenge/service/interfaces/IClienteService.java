@@ -10,19 +10,9 @@ public interface IClienteService {
 
     Cliente getOne(Long id);
 
-    void save(Cliente cliente);
+    Cliente save(Cliente cliente);
 
-    List<Cliente> search(String searchTerm); /* conviene hacerlo en la vista */
+    List<Cliente> findByNombres(String nombres);
 
-    /*
-        cambiados por un save()
-        void insert(Cliente cliente);
-        void update(Cliente cliente);
-     */
-
-
-
-
-
-
+    void delete(Long id);
 }

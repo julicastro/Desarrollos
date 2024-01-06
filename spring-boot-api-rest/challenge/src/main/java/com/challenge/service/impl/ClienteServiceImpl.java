@@ -24,13 +24,19 @@ public class ClienteServiceImpl implements IClienteService {
     }
 
     @Override
-    public void save(Cliente cliente) {
-        clienteDao.save(cliente);
+    public Cliente save(Cliente cliente) {
+        return clienteDao.save(cliente);
     }
 
     @Override
-    public List<Cliente> search(String searchTerm) {
-        return null;
+    public List<Cliente> findByNombres(String nombres) {
+        return clienteDao.findByNombres(nombres);
     }
+
+    @Override
+    public void delete(Long id){
+        clienteDao.deleteById(id);
+    }
+
 
 }
