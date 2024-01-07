@@ -10,9 +10,9 @@ public interface IClienteService {
 
     Cliente getOne(Long id);
 
-    Cliente save(Cliente cliente);
+    void save(Cliente cliente);
 
     List<Cliente> findByNombres(String nombres);
 
-    void delete(Long id);
+    void delete(Long id) throws Exception;
 }
