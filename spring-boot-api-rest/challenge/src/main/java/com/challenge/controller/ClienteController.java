@@ -2,12 +2,14 @@ package com.challenge.controller;
 
 import com.challenge.model.entity.Cliente;
 import com.challenge.service.interfaces.IClienteService;
+import com.challenge.util.ErrorFormater;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -23,10 +25,14 @@ public class ClienteController {
     }
 
     @PostMapping
-    private ResponseEntity<String> save(@Valid @RequestBody Cliente cliente){
-        if (cliente.getId() == null || clienteService.getOne(cliente.getId()) != null){
-             this.clienteService.save(cliente);
-             return new ResponseEntity<>("Cliente guardado con éxito" + cliente.toString(), HttpStatus.OK);
+    private ResponseEntity<String> save(@Valid @RequestBody Cliente cliente, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            String errors = ErrorFormater.formatError(bindingResult);
+            return new ResponseEntity<>("Errores de validación: " + "\n" + errors, HttpStatus.BAD_REQUEST);
+        }
+        if (cliente.getId() == null || clienteService.getOne(cliente.getId()) != null) {
+            this.clienteService.save(cliente);
+            return new ResponseEntity<>("Cliente guardado con éxito" + cliente.toString(), HttpStatus.OK);
         }
         return new ResponseEntity<>("Error al guardar cliente", HttpStatus.INTERNAL_SERVER_ERROR);
     }
@@ -45,6 +51,4 @@ public class ClienteController {
             return new ResponseEntity<>("Error al eliminar el cliente: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-
-
 }

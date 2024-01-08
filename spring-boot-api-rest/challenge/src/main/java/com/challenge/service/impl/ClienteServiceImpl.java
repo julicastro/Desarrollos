@@ -6,7 +6,6 @@ import com.challenge.service.interfaces.IClienteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.validation.Valid;
 import java.util.List;
 
 @Service
@@ -26,8 +25,8 @@ public class ClienteServiceImpl implements IClienteService {
     }
 
     @Override
-    public void save(Cliente cliente){
-         clienteDao.save(cliente);
+    public Cliente save(Cliente cliente){
+        return clienteDao.save(cliente);
     }
 
     @Override
@@ -43,6 +42,4 @@ public class ClienteServiceImpl implements IClienteService {
             throw new Exception("No se encontró un cliente con ese ID");
         }
     }
-
-
 }
