@@ -33,8 +33,8 @@ public class Cliente {
     private Date fechaNacimiento;
 
     @NotBlank(message = "{cliente.cuit.null}")
-    @Pattern(regexp = "\\d{2}-\\d{8}-\\d{1}", message = "{cliente.cuit.formato}")
-    @Size(min = 11, max = 11, message = "{cliente.cuit.longitud}")
+    @Pattern(regexp = "\\d{2}-\\d{8}-\\d{1}", message = "{cliente.cuit.format}")
+    @Size(min = 13, max = 13, message = "{cliente.cuit.longitud}")
     private String cuit;
 
     @NotBlank(message = "{cliente.domicilio.null}")

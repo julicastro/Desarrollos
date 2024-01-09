@@ -19,12 +19,12 @@ public class ClienteController {
     @Autowired
     private IClienteService clienteService;
 
-    @GetMapping
+    @GetMapping(path = "/get")
     private List<Cliente> getClientes(){
         return this.clienteService.getAll();
     }
 
-    @PostMapping
+    @PostMapping("/put")
     private ResponseEntity<String> save(@Valid @RequestBody Cliente cliente, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             String errors = ErrorFormater.formatError(bindingResult);
@@ -37,12 +37,12 @@ public class ClienteController {
         return new ResponseEntity<>("Error al guardar cliente", HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
-    @GetMapping(path = "/{nombre}")
+    @GetMapping(path = "get/{nombre}")
     private List<Cliente> getClientesByNombre(@PathVariable("nombre") String nombre){
         return this.clienteService.findByNombres(nombre);
     }
 
-    @DeleteMapping(path = "/{id}")
+    @DeleteMapping(path = "delete/{id}")
     private ResponseEntity<String> delete(@PathVariable("id") Long id) throws Exception {
         try {
             clienteService.delete(id);
