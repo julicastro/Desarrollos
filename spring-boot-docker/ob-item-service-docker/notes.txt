@@ -15,3 +15,4 @@
    b. docker ps -> show containers running
    c. docker run -p 8091:8080 julicastro/app-image:v3 -> corre en otro puerto y otra version
    d. docker kill id-> kill version running
+11. pull mongofb image from dockerhub -> docker pull mongo:latest
