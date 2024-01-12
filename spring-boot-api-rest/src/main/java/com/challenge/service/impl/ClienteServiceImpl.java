@@ -31,7 +31,7 @@ public class ClienteServiceImpl implements IClienteService {
 
     @Override
     public List<Cliente> findByNombres(String nombres) {
-        return clienteDao.findByNombres(nombres);
+        return clienteDao.findByNombresLike(nombres);
     }
 
     @Override
