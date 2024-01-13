@@ -18,6 +18,13 @@ public class Product {
     @Enumerated(EnumType.STRING)
     private ProductStatus status;
 
+    @ManyToOne
+    @JoinColumn(name = "category_id")
+    private Category category;
+
+    public Product() {
+    }
+
     public static enum ProductStatus{
         ENABLED, DISABLED;
         /* los enum tienen un valor ordinal
