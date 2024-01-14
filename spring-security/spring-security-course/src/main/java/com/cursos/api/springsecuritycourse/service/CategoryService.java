@@ -10,6 +10,7 @@ import java.util.Optional;
 
 @Service
 public interface CategoryService {
+
     Page<Category> findAll(Pageable pageable);
 
     Optional<Category> findOneById(Long categoryId);
