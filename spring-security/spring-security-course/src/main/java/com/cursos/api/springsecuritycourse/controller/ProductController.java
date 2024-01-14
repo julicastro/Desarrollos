@@ -41,7 +41,7 @@ public class ProductController {
     }
 
     @PostMapping
-    public ResponseEntity<Product> findOne(@RequestBody @Valid SaveProduct saveProduct){
+    public ResponseEntity<Product> createOne(@RequestBody @Valid SaveProduct saveProduct){
         Product product = productService.createOne(saveProduct);
         return ResponseEntity.status(HttpStatus.CREATED).body(product);
     }
