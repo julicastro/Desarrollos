@@ -27,10 +27,10 @@ public class HttpSecurityConfig {
                 .authorizeHttpRequests(authReqConfig -> {
                     authReqConfig.requestMatchers(HttpMethod.POST, "/customers").permitAll();
                     authReqConfig.requestMatchers(HttpMethod.POST, "/auth/**").permitAll();
+                    authReqConfig.requestMatchers(HttpMethod.POST, "/**").permitAll();
                     // authReqConfig.requestMatchers(HttpMethod.POST, "/auth/validate").permitAll();
                     // tenemos q decirle q endpoints necesitan login
                     authReqConfig.anyRequest().authenticated(); // cualquier request q no sean las anteriores, necesitan del login.
-
                 })
                 .build(); // crea un DefaultSecurityFilterChain
         return filterChain;

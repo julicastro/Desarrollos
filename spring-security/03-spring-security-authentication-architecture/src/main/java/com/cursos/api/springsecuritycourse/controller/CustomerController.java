@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @RestControllerAdvice
-@RequestMapping("/costumers")
+@RequestMapping("/customers")
 public class CustomerController {
 
     @Autowired
@@ -24,6 +24,7 @@ public class CustomerController {
         RegisteredUser registeredUser = authenticationService.registerOneCustomer(newUser);
         return ResponseEntity.status(HttpStatus.CREATED).body(registeredUser);
     }
+
 
 
 
