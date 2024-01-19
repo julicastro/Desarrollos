@@ -4,6 +4,7 @@ import com.cursos.api.springsecuritycourse.persistence.entity.User;
 import io.jsonwebtoken.Header;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -42,7 +43,8 @@ public class JwtService {
     }
 
     private Key generateKey() {
-        byte[] key = SECRET_KEY.getBytes();
-        return Keys.hmacShaKeyFor(key); // arreglo de bytes q equivale a mi clave en string
+        byte[] passwordDecoded = Decoders.BASE64.decode(SECRET_KEY);
+        // la clave viene como base64. en este caso del .properties. x eso la decodifica a bytes equivalentes al string común
+        return Keys.hmacShaKeyFor(passwordDecoded); // arreglo de bytes q equivale a mi clave en string
     }
 }
