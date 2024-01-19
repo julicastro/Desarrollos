@@ -20,7 +20,7 @@ public class GlobalExceptionHandler {
     public ResponseEntity<?> handlerGenericException(HttpServletRequest request, Exception exception){ // el <?> indica q puede ser cualquier tipo de objeto
         // los parametros del metodo pueden estar en cualquier orden
         ApiError apiError = new ApiError();
-        apiError.setBackendMessage(exception.getLocalizedMessage()); // este msj no esta hecho para el cliente
+        apiError.setBackendMessage(exception.getLocalizedMessage() + exception.getStackTrace() + exception.getCause() + exception.getClass() + exception.getSuppressed()); // este msj no esta hecho para el cliente
         apiError.setUrl(request.getRequestURL().toString());
         apiError.setMethod(request.getMethod());
         apiError.setTimestamp(LocalDateTime.now());

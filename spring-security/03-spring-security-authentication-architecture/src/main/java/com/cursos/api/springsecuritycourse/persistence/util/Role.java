@@ -19,7 +19,7 @@ public enum Role {
             RolePermission.DISABLED_ONE_CATEGORY,
 
             RolePermission.READ_MY_PROFILE
-            )),
+    )),
     ROLE_ASSISTANT_ADMINISTRATOR(Arrays.asList(
             RolePermission.READ_ALL_PRODUCTS,
             RolePermission.READ_ONE_PRODUCT,
@@ -38,7 +38,7 @@ public enum Role {
     private List<RolePermission> permission;
 
     Role(List<RolePermission> permissions) {
-        this.permission = permission;
+        this.permission = permissions;  // Corregido aquí
     }
 
     public List<RolePermission> getPermission() {
