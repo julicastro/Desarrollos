@@ -1,9 +1,7 @@
 package com.cursos.api.springsecuritycourse.service.auth;
 
 import com.cursos.api.springsecuritycourse.persistence.entity.User;
-import io.jsonwebtoken.Header;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
@@ -46,5 +44,16 @@ public class JwtService {
         byte[] passwordDecoded = Decoders.BASE64.decode(SECRET_KEY);
         // la clave viene como base64. en este caso del .properties. x eso la decodifica a bytes equivalentes al string común
         return Keys.hmacShaKeyFor(passwordDecoded); // arreglo de bytes q equivale a mi clave en string
+    }
+
+    public String extractUsername(String jwt) {
+        return extractAllClaims(jwt).getSubject();
+    }
+
+    private Claims extractAllClaims(String jwt) {
+        return Jwts.parser().setSigningKey(generateKey()).build()
+                .parseClaimsJws(jwt).getBody(); // parseClaimsJws se usa cuando el jwt está firmado
+        // ClaimJws es un JWT q ha sido firmado. es decir tiene paylod q ha sido criptograficamente firmado.
+
     }
 }

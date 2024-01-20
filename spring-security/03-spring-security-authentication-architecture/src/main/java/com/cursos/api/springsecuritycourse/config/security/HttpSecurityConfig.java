@@ -26,9 +26,8 @@ public class HttpSecurityConfig {
                 .authenticationProvider(daoAuthProvider) // estrategia
                 .authorizeHttpRequests(authReqConfig -> {
                     authReqConfig.requestMatchers(HttpMethod.POST, "/customers").permitAll();
-                    authReqConfig.requestMatchers(HttpMethod.POST, "/auth/**").permitAll();
-                    authReqConfig.requestMatchers(HttpMethod.GET, "/products").permitAll();
-                    // authReqConfig.requestMatchers(HttpMethod.POST, "/auth/validate").permitAll();
+                    authReqConfig.requestMatchers(HttpMethod.GET, "/auth/validate-token").permitAll();
+                    authReqConfig.requestMatchers(HttpMethod.POST, "/auth/authenticate").permitAll();
                     // tenemos q decirle q endpoints necesitan login
                     authReqConfig.anyRequest().authenticated(); // cualquier request q no sean las anteriores, necesitan del login.
                 })

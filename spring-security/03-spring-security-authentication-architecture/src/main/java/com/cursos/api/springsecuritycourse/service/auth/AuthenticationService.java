@@ -64,4 +64,18 @@ public class AuthenticationService {
         authRsp.setJwt(jwt);
         return authRsp;
     }
+
+    public boolean validateToken(String jwt) {
+        // validar formato. base64 debe devolver json válido.
+        // validar firma con la q me están enviando.
+        // validar q no haya expirado.
+        try{
+            jwtService.extractUsername(jwt);
+            return true;
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+            return false;
+        }
+
+    }
 }

@@ -18,3 +18,8 @@ INSERT INTO product (name, price, status, category_id) VALUES ('Raqueta de Tenis
 
 INSERT INTO product (name, price, status, category_id) VALUES ('Aspiradora', 120.00, 'ENABLED', 4);
 INSERT INTO product (name, price, status, category_id) VALUES ('Licuadora', 50.00, 'ENABLED', 4);
+
+-- CREACIÓN DE USUARIOS
+INSERT INTO "user" (username, name, password, role) VALUES ('lmarquez', 'luis márquez', '$2a$10$Ups4bxkyNFuo/vAQX364MeCOqu4uw1hvQP.XeaOMxr7ZgxUEpq5WK', 'ROLE_CUSTOMER');
+INSERT INTO "user" (username, name, password, role) VALUES ('fperez', 'fulano pérez', '$2a$10$gNEDBJcvSyOEdVsZ27ZFU.UNIYE6odp1gBMMfDKXKv6BHTglyTLIC', 'ROLE_ASSISTANT_ADMINISTRATOR');
+INSERT INTO "user" (username, name, password, role) VALUES ('mhernandez', 'mengano hernández', '$2a$10$KNRW5Co3q8YUkAs4xPjcrebgQ.ppYi2entj.5UXk2xhJstmaaeybO', 'ROLE_ADMINISTRATOR');
