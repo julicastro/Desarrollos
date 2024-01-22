@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.web.authentication.WebAuthenticationDetails;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.GenericFilterBean;
@@ -30,7 +31,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-
+        // El JwtAuthenticationFilter setea el Authentication a partir de un JWT dentro de un SecurityContextHolder, para q luego se haga un proceso de autorización.
         System.out.println("ENTRO EN doFilterInternal DEL JwtAuthenticationFilter");
         // 1. obtener header http llamado Authorization
         String authorizationHeader = request.getHeader("Authorization");
@@ -48,6 +49,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
                 username, null, user.getAuthorities()
         );
+        // authToken.setDetails(request.getRemoteAddr()); // devuelve la ip eso
+        authToken.setDetails(new WebAuthenticationDetails(request)); // asi le seteamos mejor los detalles. tiene ip, session id
         SecurityContextHolder.getContext().setAuthentication(authToken);
         // 5. ejecutar resto de filtros.
         filterChain.doFilter(request, response);
