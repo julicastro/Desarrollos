@@ -4,6 +4,7 @@ import com.cursos.api.springsecuritycourse.dto.RegisteredUser;
 import com.cursos.api.springsecuritycourse.dto.SaveUser;
 import com.cursos.api.springsecuritycourse.dto.auth.AuthenticationRequest;
 import com.cursos.api.springsecuritycourse.dto.auth.AuthenticationResponse;
+import com.cursos.api.springsecuritycourse.exception.ObjectNotFoundException;
 import com.cursos.api.springsecuritycourse.persistence.entity.User;
 import com.cursos.api.springsecuritycourse.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,7 +46,7 @@ public class AuthenticationService {
 
     private Map<String, Object> generateExtraClaims(User user) {
         // seteamos los claims (propierdades del payload)
-        Map<String, Object> extraClaims= new HashMap<>();
+        Map<String, Object> extraClaims = new HashMap<>();
         extraClaims.put("name", user.getName());
         extraClaims.put("role", user.getRole().name());
         extraClaims.put("authorities", user.getRole().getPermission()); // user.getRole().getPermission() = user.getAuthorities();
@@ -59,7 +60,7 @@ public class AuthenticationService {
         );
         authenticationManager.authenticate(authentication); // trata de hacer el login.     // busca un proveedor el cual es el DaoAuthenticationProvider
         UserDetails user = userService.findOneByUsername(authRequest.getUsername()).get(); // devuelve un optional pero siempre va a estar si pasó el metodo authenticate()
-        String jwt = jwtService.generateToken(user, generateExtraClaims( (User) user) );
+        String jwt = jwtService.generateToken(user, generateExtraClaims((User) user));
         AuthenticationResponse authRsp = new AuthenticationResponse();
         authRsp.setJwt(jwt);
         return authRsp;
@@ -69,13 +70,44 @@ public class AuthenticationService {
         // validar formato. base64 debe devolver json válido.
         // validar firma con la q me están enviando.
         // validar q no haya expirado.
-        try{
+        try {
             jwtService.extractUsername(jwt);
             return true;
-        }catch (Exception e){
+        } catch (Exception e) {
             System.out.println(e.getMessage());
             return false;
         }
 
     }
+
+    public User findLoggedInUser() {
+        Authentication auth =
+                (UsernamePasswordAuthenticationToken) SecurityContextHolder.getContext().getAuthentication();
+        String username = (String) auth.getPrincipal();
+        return userService.findOneByUsername(username)
+                .orElseThrow(() -> new ObjectNotFoundException("User not found. Username: " + username));
+        /* esta excepcion nunca se va a ejutar xq si llega a este
+         * punto es xq el usuario está logeado. y eso lo aseguramos
+         * ya q este es un metodo protegido */
+    }
+
+    /*
+    EN CASO DE MANEJAR MAS DE 1 TIPO DE AUTHENTICATION:
+    public User findLoggedInUser() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if (auth instanceof UsernamePasswordAuthenticationToken authToken) {
+            // authToken = (UsernamePasswordAuthenticationToken) auth;
+            String username = (String) authToken.getPrincipal();
+            return userService.findOneByUsername(username)
+                    .orElseThrow(() -> new ObjectNotFoundException("User not found. Username: " + username));
+            /* esta excepcion nunca se va a ejutar xq si llega a este
+             * punto es xq el usuario está logeado. y eso lo aseguramos
+             * ya q este es un metodo protegido */
+    /* el if es x si se ejecuta mas de un tipo de authentication.
+     * pero en este caso nunca va a ser otro tipo, x ende nunca va a
+     * llegar al return null */
+    // return null;
+    //}
+
 }
+
