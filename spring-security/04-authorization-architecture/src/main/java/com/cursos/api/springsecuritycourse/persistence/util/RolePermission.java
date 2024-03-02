@@ -13,7 +13,7 @@ public enum RolePermission {
     READ_ALL_CATEGORIES,
     READ_ONE_CATEGORY,
     CREATE_ONE_CATEGORY,
-    UPDATED_ONE_PCATEGORY,
+    UPDATED_ONE_CATEGORY,
     DISABLED_ONE_CATEGORY,
 
     // user permission

@@ -15,7 +15,7 @@ public enum Role {
             RolePermission.READ_ALL_CATEGORIES,
             RolePermission.READ_ONE_CATEGORY,
             RolePermission.CREATE_ONE_CATEGORY,
-            RolePermission.UPDATED_ONE_PCATEGORY,
+            RolePermission.UPDATED_ONE_CATEGORY,
             RolePermission.DISABLED_ONE_CATEGORY,
 
             RolePermission.READ_MY_PROFILE
