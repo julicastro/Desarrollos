@@ -1,32 +1,19 @@
 package com.cursos.api.springsecuritycourse.config.security;
 
 import com.cursos.api.springsecuritycourse.config.security.filter.JwtAuthenticationFilter;
-import com.cursos.api.springsecuritycourse.persistence.util.RolePermission;
+import com.cursos.api.springsecuritycourse.persistence.util.Role;
 
-import jakarta.servlet.ServletException;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
-import org.springframework.security.access.AccessDeniedException;
-import org.springframework.security.access.annotation.Secured;
-import org.springframework.security.access.prepost.PostAuthorize;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationProvider;
-import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AuthorizeHttpRequestsConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-
-import java.io.IOException;
 
 @Configuration
 @EnableWebSecurity
@@ -55,6 +42,44 @@ public class HttpSecurityConfig {
         return filterChain;
     }
 
+    private static void buildRequestMatchers(
+            AuthorizeHttpRequestsConfigurer<HttpSecurity>.AuthorizationManagerRequestMatcherRegistry authReqConfig) {
+        // Authorizacion de endpoints de productos
+        authReqConfig.requestMatchers(HttpMethod.GET, "/products")
+                .hasAnyRole(Role.ADMINISTRATOR.name(), Role.ASSISTANT_ADMINISTRATOR.name());
+        authReqConfig.requestMatchers(HttpMethod.GET, "/products/{productId}")
+                .hasAnyRole(Role.ADMINISTRATOR.name(), Role.ASSISTANT_ADMINISTRATOR.name());
+        authReqConfig.requestMatchers(HttpMethod.POST, "/products")
+                .hasRole(Role.ADMINISTRATOR.name());
+        authReqConfig.requestMatchers(HttpMethod.PUT, "/products/{productId}")
+                .hasAnyRole(Role.ADMINISTRATOR.name(), Role.ASSISTANT_ADMINISTRATOR.name());
+        authReqConfig.requestMatchers(HttpMethod.PUT, "/products/{productId}/disabled")
+                .hasRole(Role.ADMINISTRATOR.name());
+        // Authorizacion de endpoints de categorias
+        authReqConfig.requestMatchers(HttpMethod.GET, "/categories")
+                .hasAnyRole(Role.ADMINISTRATOR.name(), Role.ASSISTANT_ADMINISTRATOR.name());
+        authReqConfig.requestMatchers(HttpMethod.GET, "/categories/{categoryId}")
+                .hasAnyRole(Role.ADMINISTRATOR.name(), Role.ASSISTANT_ADMINISTRATOR.name());
+        authReqConfig.requestMatchers(HttpMethod.POST, "/categories")
+                .hasRole(Role.ADMINISTRATOR.name());
+        authReqConfig.requestMatchers(HttpMethod.PUT, "/categories/{categoryId}")
+                .hasAnyRole(Role.ADMINISTRATOR.name(), Role.ASSISTANT_ADMINISTRATOR.name());
+        authReqConfig.requestMatchers(HttpMethod.PUT, "/categories/{categoryId}/disabled")
+                .hasAnyRole(Role.ADMINISTRATOR.name(), Role.ASSISTANT_ADMINISTRATOR.name());
+        // Profile
+        authReqConfig.requestMatchers(HttpMethod.GET, "/auth/profile")
+                .hasAnyRole(Role.ADMINISTRATOR.name(), Role.ASSISTANT_ADMINISTRATOR.name(), Role.CUSTOMER.name());
+        // Authorizacion de endpoints publicos
+        authReqConfig.requestMatchers(HttpMethod.POST, "/customers").permitAll();
+        authReqConfig.requestMatchers(HttpMethod.GET, "/auth/validate-token").permitAll();
+        authReqConfig.requestMatchers(HttpMethod.POST, "/auth/authenticate").permitAll();
+        // tenemos q decirle q endpoints necesitan login
+        authReqConfig.anyRequest().authenticated(); // cualquier request q no sean las anteriores, necesitan del login.
+    }
+
+
+    /*
+        ESTRATEGIA DE PERMISSIONS
     private static void buildRequestMatchers(
             AuthorizeHttpRequestsConfigurer<HttpSecurity>.AuthorizationManagerRequestMatcherRegistry authReqConfig) {
         // Authorizacion de endpoints de productos
@@ -88,5 +113,7 @@ public class HttpSecurityConfig {
         // tenemos q decirle q endpoints necesitan login
         authReqConfig.anyRequest().authenticated(); // cualquier request q no sean las anteriores, necesitan del login.
     }
+
+     */
 
 }
