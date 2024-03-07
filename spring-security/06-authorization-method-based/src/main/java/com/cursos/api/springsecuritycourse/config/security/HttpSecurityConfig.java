@@ -36,20 +36,18 @@ public class HttpSecurityConfig {
                 .sessionManagement( sessMagConfig -> sessMagConfig.sessionCreationPolicy(SessionCreationPolicy.STATELESS) )
                 .authenticationProvider(daoAuthProvider)
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
-                .authorizeHttpRequests( authReqConfig -> {
-                    buildRequestMatchersv2(authReqConfig);
-                } )
+//                .authorizeHttpRequests( authReqConfig -> {
+//                    //buildRequestMatchersv2(authReqConfig);
+//                } )
                 .build();
 
         return filterChain;
     }
 
     /* autenticación basada en asegurar métodos */
+    /*
     private static void buildRequestMatchersv2(AuthorizeHttpRequestsConfigurer<HttpSecurity>.AuthorizationManagerRequestMatcherRegistry authReqConfig) {
         // Autorización de endpoints de products
-
-
-
         // Autorización de endpoints de categories
         //  Autorización de endpoints públicos
         authReqConfig.requestMatchers(HttpMethod.POST, "/customers").permitAll();
@@ -57,7 +55,7 @@ public class HttpSecurityConfig {
         authReqConfig.requestMatchers(HttpMethod.GET, "/auth/validate-token").permitAll();
         authReqConfig.anyRequest().authenticated();
     }
-
+    */
 
 
     /* autenticación basada en match de peticiones
