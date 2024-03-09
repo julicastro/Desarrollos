@@ -13,13 +13,14 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AuthorizeHttpRequestsConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.util.matcher.RegexRequestMatcher;
 
 @Configuration
 @EnableWebSecurity
-@EnableMethodSecurity(prePostEnabled = true)
+// @EnableMethodSecurity(prePostEnabled = true) comentado para establecer seguridad basada en solicitudes http
 public class HttpSecurityConfig {
 
     @Autowired
@@ -27,6 +28,9 @@ public class HttpSecurityConfig {
 
     @Autowired
     private JwtAuthenticationFilter jwtAuthenticationFilter;
+
+    @Autowired
+    private AuthenticationEntryPoint authenticationEntryPoint;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -36,9 +40,12 @@ public class HttpSecurityConfig {
                 .sessionManagement( sessMagConfig -> sessMagConfig.sessionCreationPolicy(SessionCreationPolicy.STATELESS) )
                 .authenticationProvider(daoAuthProvider)
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
-//                .authorizeHttpRequests( authReqConfig -> {
-//                    //buildRequestMatchersv2(authReqConfig);
-//                } )
+                .authorizeHttpRequests( authReqConfig -> {
+                    buildRequestMatchers(authReqConfig);
+                } )
+                .exceptionHandling( exceptionConfig -> {
+                    exceptionConfig.authenticationEntryPoint(authenticationEntryPoint);
+                })
                 .build();
 
         return filterChain;
@@ -57,12 +64,8 @@ public class HttpSecurityConfig {
     }
     */
 
-
-    /* autenticación basada en match de peticiones
     private static void buildRequestMatchers(AuthorizeHttpRequestsConfigurer<HttpSecurity>.AuthorizationManagerRequestMatcherRegistry authReqConfig) {
-
     // Autorización de endpoints de products
-
         authReqConfig.requestMatchers(HttpMethod.GET, "/products")
                 .hasAnyRole(Role.ADMINISTRATOR.name(), Role.ASSISTANT_ADMINISTRATOR.name());
 
@@ -79,9 +82,7 @@ public class HttpSecurityConfig {
         authReqConfig.requestMatchers(HttpMethod.PUT, "/products/{productId}/disabled")
                 .hasRole(Role.ADMINISTRATOR.name());
 
-
         // Autorización de endpoints de categories
-
 
         authReqConfig.requestMatchers(HttpMethod.GET, "/categories")
                 .hasAnyRole(Role.ADMINISTRATOR.name(), Role.ASSISTANT_ADMINISTRATOR.name());
@@ -102,7 +103,6 @@ public class HttpSecurityConfig {
                 .hasAnyRole(Role.ADMINISTRATOR.name(), Role.ASSISTANT_ADMINISTRATOR.name(),
                         Role.CUSTOMER.name());
 
-
                    //  Autorización de endpoints públicos
 
         authReqConfig.requestMatchers(HttpMethod.POST, "/customers").permitAll();
@@ -110,6 +110,6 @@ public class HttpSecurityConfig {
         authReqConfig.requestMatchers(HttpMethod.GET, "/auth/validate-token").permitAll();
 
         authReqConfig.anyRequest().authenticated();
-    }*/
+    }
 
 }
