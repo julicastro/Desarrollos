@@ -18,6 +18,12 @@ import java.time.LocalDateTime;
 @Component
 public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint {
 
+    /* si queremos manejar access denied handler
+    * @Autowired
+    * Private AccessDiniedHandler accessDeniedHandler
+    * luego en el método commence hacemos la llamada:
+    * accessDeniedHandler.handle(request, response, new AccessDeniedException("Access Denied"))
+    * dicha llamada tendra la implemtencion automaticamente de nuestro CustomAccessDeniedHandler */
     /* va a ser el punto de entrada a nuestra app */
 
     @Override

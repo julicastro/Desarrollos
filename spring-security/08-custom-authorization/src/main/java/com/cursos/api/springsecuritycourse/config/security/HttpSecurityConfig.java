@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
@@ -21,7 +23,7 @@ import org.springframework.security.web.util.matcher.RegexRequestMatcher;
 
 @Configuration
 @EnableWebSecurity
-// @EnableMethodSecurity(prePostEnabled = true) comentado para establecer seguridad basada en solicitudes http
+//@EnableMethodSecurity(prePostEnabled = true)
 public class HttpSecurityConfig {
 
     @Autowired
@@ -49,28 +51,17 @@ public class HttpSecurityConfig {
                 } )
                 .exceptionHandling( exceptionConfig -> {
                     exceptionConfig.authenticationEntryPoint(authenticationEntryPoint);
-                    exceptionConfig.accessDeniedHandler(accessDeniedHandler); // inscribimos nuestra excepcion personalizada
+                    exceptionConfig.accessDeniedHandler(accessDeniedHandler);
                 })
                 .build();
 
         return filterChain;
     }
 
-    /* autenticación basada en asegurar métodos */
-    /*
-    private static void buildRequestMatchersv2(AuthorizeHttpRequestsConfigurer<HttpSecurity>.AuthorizationManagerRequestMatcherRegistry authReqConfig) {
-        // Autorización de endpoints de products
-        // Autorización de endpoints de categories
-        //  Autorización de endpoints públicos
-        authReqConfig.requestMatchers(HttpMethod.POST, "/customers").permitAll();
-        authReqConfig.requestMatchers(HttpMethod.POST, "/auth/authenticate").permitAll();
-        authReqConfig.requestMatchers(HttpMethod.GET, "/auth/validate-token").permitAll();
-        authReqConfig.anyRequest().authenticated();
-    }
-    */
-
     private static void buildRequestMatchers(AuthorizeHttpRequestsConfigurer<HttpSecurity>.AuthorizationManagerRequestMatcherRegistry authReqConfig) {
-    // Autorización de endpoints de products
+    /*
+    Autorización de endpoints de products
+     */
         authReqConfig.requestMatchers(HttpMethod.GET, "/products")
                 .hasAnyRole(Role.ADMINISTRATOR.name(), Role.ASSISTANT_ADMINISTRATOR.name());
 
@@ -87,7 +78,9 @@ public class HttpSecurityConfig {
         authReqConfig.requestMatchers(HttpMethod.PUT, "/products/{productId}/disabled")
                 .hasRole(Role.ADMINISTRATOR.name());
 
-        // Autorización de endpoints de categories
+                    /*
+                    Autorización de endpoints de categories
+                     */
 
         authReqConfig.requestMatchers(HttpMethod.GET, "/categories")
                 .hasAnyRole(Role.ADMINISTRATOR.name(), Role.ASSISTANT_ADMINISTRATOR.name());
@@ -108,8 +101,21 @@ public class HttpSecurityConfig {
                 .hasAnyRole(Role.ADMINISTRATOR.name(), Role.ASSISTANT_ADMINISTRATOR.name(),
                         Role.CUSTOMER.name());
 
-                   //  Autorización de endpoints públicos
+                    /*
+                    Autorización de endpoints públicos
+                     */
+        authReqConfig.requestMatchers(HttpMethod.POST, "/customers").permitAll();
+        authReqConfig.requestMatchers(HttpMethod.POST, "/auth/authenticate").permitAll();
+        authReqConfig.requestMatchers(HttpMethod.GET, "/auth/validate-token").permitAll();
 
+        authReqConfig.anyRequest().authenticated();
+    }
+
+    private static void buildRequestMatchersV2(AuthorizeHttpRequestsConfigurer<HttpSecurity>.AuthorizationManagerRequestMatcherRegistry authReqConfig) {
+
+        /*
+        Autorización de endpoints públicos
+         */
         authReqConfig.requestMatchers(HttpMethod.POST, "/customers").permitAll();
         authReqConfig.requestMatchers(HttpMethod.POST, "/auth/authenticate").permitAll();
         authReqConfig.requestMatchers(HttpMethod.GET, "/auth/validate-token").permitAll();
