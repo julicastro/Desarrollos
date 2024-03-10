@@ -14,11 +14,8 @@ public class Role {
 
     private String name;
 
-    /* EAGER -> obtiene todos de una
-    * LAZY -> default para colecciones */
-
-    @JsonIgnore // al generar json ignora este atributo para q no sea infinito
-    @OneToMany(mappedBy = "role", fetch = FetchType.EAGER) // en grantedPermission debe tener un atributo role
+    @JsonIgnore
+    @OneToMany(mappedBy = "role", fetch = FetchType.EAGER)
     private List<GrantedPermission> permissions;
 
     public Long getId() {

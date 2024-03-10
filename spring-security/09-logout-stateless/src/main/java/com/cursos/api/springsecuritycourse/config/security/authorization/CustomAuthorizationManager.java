@@ -25,79 +25,89 @@ import java.util.stream.Collectors;
 @Component
 public class CustomAuthorizationManager implements AuthorizationManager<RequestAuthorizationContext> {
 
-    // el verify llama al check
-
     @Autowired
     private OperationRepository operationRepository;
 
     @Autowired
     private UserService userService;
-
     @Override
     public AuthorizationDecision check(Supplier<Authentication> authentication,
                                        RequestAuthorizationContext requestContext) {
-        // requestContext -> saco peticion + url
+
         HttpServletRequest request = requestContext.getRequest();
-        // URI -> no trae host y puerto. URL si
-        // System.out.println(request.getRequestURI());
+
         String url = extractUrl(request);
         String httpMethod = request.getMethod();
+
         boolean isPublic = isPublic(url, httpMethod);
-        if (isPublic){
+        if(isPublic){
             return new AuthorizationDecision(true);
         }
-        boolean isGranted = isGranted(url, httpMethod, authentication.get());
-        return new AuthorizationDecision(isGranted);
 
+        boolean isGranted = isGranted(url, httpMethod, authentication.get());
+
+        return new AuthorizationDecision(isGranted);
     }
 
     private boolean isGranted(String url, String httpMethod, Authentication authentication) {
-        if (authentication == null || !(authentication instanceof UsernamePasswordAuthenticationToken)){
-            // si es nulo es xq no se autenticó
+
+        if( authentication == null || !(authentication instanceof UsernamePasswordAuthenticationToken)){
             throw new AuthenticationCredentialsNotFoundException("User not logged in");
         }
-        List<Operation> operations = obtainedOperations(authentication);
+
+        List<Operation> operations = obtainOperations(authentication);
+
         boolean isGranted = operations.stream().anyMatch(getOperationPredicate(url, httpMethod));
-        System.out.println(isGranted);
+
+        System.out.println("IS GRANTED: " + isGranted);
         return isGranted;
     }
 
     private static Predicate<Operation> getOperationPredicate(String url, String httpMethod) {
         return operation -> {
+
             String basePath = operation.getModule().getBasePath();
-            // regex = '/[0-9]* de la fila de la base de datos
+
             Pattern pattern = Pattern.compile(basePath.concat(operation.getPath()));
-            Matcher matcher = pattern.matcher(url); // patron debe hacer match con url
+            Matcher matcher = pattern.matcher(url);
+
             return matcher.matches() && operation.getHttpMethod().equals(httpMethod);
         };
     }
 
-    private List<Operation> obtainedOperations(Authentication authentication) {
+    private List<Operation> obtainOperations(Authentication authentication) {
+
         UsernamePasswordAuthenticationToken authToken = (UsernamePasswordAuthenticationToken) authentication;
         String username = (String) authToken.getPrincipal();
-        User user = userService.findOneByUsername(username).orElseThrow(
-                () -> new ObjectNotFoundException("User not found. Username: " + username));
+        User user = userService.findOneByUsername(username)
+                .orElseThrow(() -> new ObjectNotFoundException("User not found. Username: " + username));
+
         return user.getRole().getPermissions().stream()
-                .map(grantedPermission -> grantedPermission.getOperation()) // mapea
-                .collect(Collectors.toList()); // convierte en lista
+                .map(grantedPermission -> grantedPermission.getOperation())
+                .collect(Collectors.toList());
+
     }
 
     private boolean isPublic(String url, String httpMethod) {
-        // obtenemos los endpoints publicos de base de datos.
+
         List<Operation> publicAccessEndpoints = operationRepository
-                .findByPublicAccess();
+                .findByPubliccAcces();
+
         boolean isPublic = publicAccessEndpoints.stream().anyMatch(getOperationPredicate(url, httpMethod));
-        System.out.println("IS PUBLIC " + isPublic);
+
+
+        System.out.println("IS PUBLIC: " + isPublic);
+
         return isPublic;
     }
 
     private String extractUrl(HttpServletRequest request) {
+
         String contextPath = request.getContextPath();
-        // contextPath = /api/v1 tal como dice el properties.
         String url = request.getRequestURI();
-        url = url.replace(contextPath, ""); // sacamos el contextPath
+        url = url.replace(contextPath, "");
+        System.out.println(url);
+
         return url;
     }
-
-
 }
