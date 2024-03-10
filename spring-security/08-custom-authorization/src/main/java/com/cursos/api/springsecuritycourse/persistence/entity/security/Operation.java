@@ -14,7 +14,7 @@ public class Operation {
     private String path; // los endpoints tienen path base. /products x ejemplo.
     // luego está lo q le sigue q puede ser /product/product{Id}/disabled
 
-    private String httpMathod;
+    private String httpMethod;
 
     private boolean permitAll;
 
@@ -46,12 +46,12 @@ public class Operation {
         this.path = path;
     }
 
-    public String getHttpMathod() {
-        return httpMathod;
+    public String getHttpMethod() {
+        return httpMethod;
     }
 
-    public void setHttpMathod(String httpMathod) {
-        this.httpMathod = httpMathod;
+    public void setHttpMethod(String httpMethod) {
+        this.httpMethod = httpMethod;
     }
 
     public boolean isPermitAll() {
