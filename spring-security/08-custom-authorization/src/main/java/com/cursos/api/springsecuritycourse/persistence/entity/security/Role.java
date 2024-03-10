@@ -13,7 +13,10 @@ public class Role {
 
     private String name;
 
-    @OneToMany(mappedBy = "role") // en grantedPermission debe tener un atributo role
+    /* EAGER -> obtiene todos de una
+    * LAZY -> default para colecciones */
+
+    @OneToMany(mappedBy = "role", fetch = FetchType.LAZY) // en grantedPermission debe tener un atributo role
     private List<GrantedPermission> permissions;
 
     public Long getId() {
