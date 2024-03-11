@@ -36,21 +36,27 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+        // 1. obtener authorization header
+        // 2. obtener token
         String jwt = jwtService.extractJwtFromRequest(request);
         if(jwt == null || !StringUtils.hasText(jwt)){
-            filterChain.doFilter(request, response);
+            filterChain.doFilter(request, response); // se ejecutan el resto de filtros
             return;
         }
-
+        //2.1 obtener token no expirado y valido desde base de datos
         Optional<JwtToken> token = jwtRepository.findByToken(jwt);
+        //3 validar expieracion del token
         boolean isValid = validateToken(token);
 
-        if(!isValid){
+        if(!isValid){ // si no es válido, sigo con el proceso
             filterChain.doFilter(request, response);
             return;
         }
 
-        String username = jwtService.extractUsername(jwt);
+        //3. obtener el subject/username desde el token y validar formato
+        String username = jwtService.extractUsername(jwt); // si está expirado nunca va a entrar acá 
+
+        //4. setear objeto authentication dentro de security context holder
         User user = userService.findOneByUsername(username)
                 .orElseThrow(() -> new ObjectNotFoundException("User not found. Username: " + username));
 
@@ -60,23 +66,26 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         authToken.setDetails(new WebAuthenticationDetails(request));
         SecurityContextHolder.getContext().setAuthentication(authToken);
 
+        // 5. ejectuar el registro de filtros
         filterChain.doFilter(request, response);
     }
 
     private boolean validateToken(Optional<JwtToken> optionalJwtToken) {
-
+        // se valida la expiration del token
         if(!optionalJwtToken.isPresent()){
+            /* si no existe o no está en la bd */
             System.out.println("Token no existe o no fue generado en nuestro sistema");
             return false;
         }
 
-        JwtToken token = optionalJwtToken.get();
+        JwtToken token = optionalJwtToken.get(); // get() saca la entidad
         Date now = new Date(System.currentTimeMillis());
+        // valido q no haya expirado
         boolean isValid = token.isValid() && token.getExpiration().after(now);
 
         if(!isValid){
             System.out.println("Token inválido");
-            updateTokenStatus(token);
+            updateTokenStatus(token); // actualiza la bd a falso
         }
 
         return isValid;

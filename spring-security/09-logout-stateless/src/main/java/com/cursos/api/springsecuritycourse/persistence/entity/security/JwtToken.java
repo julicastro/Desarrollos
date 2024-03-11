@@ -11,15 +11,15 @@ public class JwtToken {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(length = 2048)
+    @Column(length = 2048) // nuestro base 64. lo debo anotar con column x la cantidad de caracteres
     private String token;
 
     private Date expiration;
 
-    private boolean isValid;
+    private boolean isValid; // en el logout cambia el isValid
 
     @ManyToOne
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user_id") // campo de la tabla jwtToken
     private User user;
 
     public Long getId() {
