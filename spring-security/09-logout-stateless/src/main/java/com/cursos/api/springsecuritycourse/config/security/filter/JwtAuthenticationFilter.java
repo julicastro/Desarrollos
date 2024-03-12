@@ -54,7 +54,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         }
 
         //3. obtener el subject/username desde el token y validar formato
-        String username = jwtService.extractUsername(jwt); // si está expirado nunca va a entrar acá 
+        String username = jwtService.extractUsername(jwt); // si está expirado nunca va a entrar acá
 
         //4. setear objeto authentication dentro de security context holder
         User user = userService.findOneByUsername(username)
