@@ -26,7 +26,7 @@ async function postData(url = "", data = {}) {
       credentials: "same-origin", // include, *same-origin, omit
       headers: {
         "Content-Type": "application/json",
-        "Authorization": "Bearer ".concat(jwt),
+        "Authorization": "Bearer ".concat(jwt), // AGREGO HEADER DE AUTHORIZATION 
         // 'Content-Type': 'application/x-www-form-urlencoded',
       },
       redirect: "follow", // manual, *follow, error
@@ -39,7 +39,7 @@ async function postData(url = "", data = {}) {
 let loginBtn = document.getElementById('login').addEventListener('click', event => {
     console.log('login')
 
-    postData("http://localhost:8585/api/v1/auth/authenticate", {username: 'mhernandez', password: 'clave789'})
+    postData("http://localhost:8081/api/v1/auth/authenticate", {username: 'mhernandez', password: 'clave789'})
 
     .then((data) => {
         console.log('authenticate. jwt: ', data.jwt);
@@ -58,7 +58,7 @@ let findBtn = document.getElementById('find').addEventListener('click', event =>
     let jwt = document.getElementById('jwt').value;
 
         console.log('input jwt value: ', jwt)
-        getData('http://localhost:8585/api/v1/products/1', jwt)
+        getData('http://localhost:8081/api/v1/products/1', jwt)
         .then(data => {
             console.log(data)
             document.getElementById('jwt').value = data.name;
