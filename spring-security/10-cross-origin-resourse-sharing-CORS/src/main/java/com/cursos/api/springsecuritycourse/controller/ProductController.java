@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
 
-@CrossOrigin
+// @CrossOrigin
 @RestController
 @RequestMapping("/products")
 public class ProductController {
@@ -25,7 +25,7 @@ public class ProductController {
     @Autowired
     private ProductService productService;
 
-    @CrossOrigin(origins = "http://www.google.com", maxAge = 10)
+    // @CrossOrigin(origins = "http://www.google.com", maxAge = 10)
     @PreAuthorize("hasAuthority('READ_ALL_PRODUCTS')")
     @GetMapping
     public ResponseEntity<Page<Product>> findAll(Pageable pageable){
