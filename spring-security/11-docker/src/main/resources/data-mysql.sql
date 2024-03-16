@@ -70,7 +70,6 @@ INSERT INTO granted_permission (role_id, operation_id) VALUES (3, 18);
 INSERT INTO granted_permission (role_id, operation_id) VALUES (3, 19);
 INSERT INTO granted_permission (role_id, operation_id) VALUES (3, 20);
 
-
 -- CREACIÓN DE USUARIOS
 INSERT INTO user (username, name, password, role_id) VALUES ('lmarquez', 'luis márquez', '$2a$10$hkNqmeUyR2hUn2mwOa4t4.DjTNxAXntF2B/DtzxObh77hQqcDE1pC', 1);
 INSERT INTO user (username, name, password, role_id) VALUES ('fperez', 'fulano pérez', '$2a$10$eb3Kascqy3P0aXoXYFKXXes.0pxapYEl7Uu4WBdpFS8ws.IjdFVq6', 2);
