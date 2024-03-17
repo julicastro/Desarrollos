@@ -5,6 +5,7 @@ import com.cursos.api.springsecuritycourse.config.security.filter.JwtAuthenticat
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authorization.AuthorizationManager;
@@ -68,10 +69,25 @@ public class HttpSecurityConfig {
         return filterChain;
     }
 
+    @Profile({"local","dev"}) // habilita un bean solo para ciertos perfiles. el local no se conecta con docker y usa h2. el dev si pero solo a mysql (sin container docker)
     @Bean
-    CorsConfigurationSource corsConfigurationSource() {
+    CorsConfigurationSource defaultCorsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowedOrigins(Arrays.asList("https://www.google.com", "http://127.0.0.1:5500"));
+        configuration.setAllowedMethods(Arrays.asList("*"));
+        configuration.setAllowedHeaders(Arrays.asList("*"));
+        configuration.setAllowCredentials(true);
+
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
+        return source;
+    }
+
+    @Profile("docker") // habilita un bean solo para ciertos perfiles. el local no se conecta con docker y usa h2. el dev si pero solo a mysql (sin container docker)
+    @Bean
+    CorsConfigurationSource dockerCorsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+        configuration.setAllowedOrigins(Arrays.asList("https://www.client")); // solo recibe peticiones de la app client
         configuration.setAllowedMethods(Arrays.asList("*"));
         configuration.setAllowedHeaders(Arrays.asList("*"));
         configuration.setAllowCredentials(true);
