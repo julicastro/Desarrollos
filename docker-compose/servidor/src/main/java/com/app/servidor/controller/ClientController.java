@@ -19,16 +19,11 @@ public class ClientController {
     @Autowired
     private ClientService clientService;
 
-    @Profile("docker")
     @GetMapping
-    public ResponseEntity<List<Client>> getAllClients(){
+    public ResponseEntity<List<Client>> dockerGtAllClients(){
         List<Client> clients = clientService.findAll();
         return ResponseEntity.ok().body(clients);
-
-
-
     }
-
 
 
 
