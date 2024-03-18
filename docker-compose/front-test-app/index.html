@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cors</title>
+</head>
+<body>
+    <h1>Prueba de Cors</h1>
+    <div>
+        <p>La idea es probar ejecutar el Cors con el puerto 5500 y con el dominio actual para 
+            probar el CORS de la app servidor. Actualmente esta tiene 2 configuraciones para CORS.
+            Una para el profile docker y otra para el profile local. El perfil de docker es el único
+            q permite ejecutar el método POST http. mientras q el perfil local solo el get. 
+        </p>
+    </div>
+    <div>
+        <button type="button" id="get-clients">Show All Clients</button>
+    </div>
+    <div id="client-table"></div>
+    <script src="./index.js"></script>
+</body>
+</html>
