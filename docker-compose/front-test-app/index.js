@@ -23,4 +23,5 @@ async function getData(url = "") {
     });
     tableHtml += '</table>';
     document.getElementById('client-table').innerHTML = tableHtml;
+
 });

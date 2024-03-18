@@ -1,12 +1,15 @@
 package com.app.servidor.config;
 
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
+import org.springframework.core.env.Environment;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.servlet.config.annotation.CorsRegistration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
@@ -17,41 +20,36 @@ import java.util.Arrays;
 @EnableWebMvc
 public class CorsConfig implements WebMvcConfigurer {
 
-    @Profile("docker")
-    @Bean
-    CorsConfigurationSource dockerCorsConfigurationSource(){
-        CorsConfiguration config = new CorsConfiguration();
-        config.setAllowedOrigins(Arrays.asList("http://www.client-app"));
-        config.setAllowedMethods(Arrays.asList("GET, POST"));
-        config.setAllowedHeaders(Arrays.asList("*"));
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", config);
-        return source;
-    }
+    @Autowired
+    private Environment environment;
 
-    @Profile({"local", "dev"})
-    @Bean
-    CorsConfigurationSource defaultCorsConfigurationSource() {
-        CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Arrays.asList("https://www.google.com", "http://127.0.0.1:5500"));
-        configuration.setAllowedMethods(Arrays.asList("GET"));
-        configuration.setAllowedHeaders(Arrays.asList("*"));
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", configuration);
-        return source;
-    }
-
-
-    @Profile("dev")
     @Override
     public void addCorsMappings(CorsRegistry registry) {
-        registry.addMapping("/**")
-                .allowedOrigins("http://127.0.0.1:5500")
-                .allowedMethods("GET")
-                .allowedHeaders("*");
+        String[] activeProfiles = environment.getActiveProfiles();
+
+        if (activeProfiles.length > 0) {
+            String activeProfile = activeProfiles[0]; // Suponiendo que solo hay un perfil activo
+            if ("docker".equals(activeProfile)) {
+                // Configuración para el perfil "local"
+                registry.addMapping("/api/endpoint1")
+                        .allowedOrigins("http://client-app")
+                        .allowedMethods("GET", "POST")
+                        .allowedHeaders("*");
+            } else if ("dev".equals(activeProfile)) {
+                // Configuración para el perfil "dev"
+                registry.addMapping("/**")
+                        .allowedOrigins("http://127.0.0.1:5500")
+                        .allowedMethods("GET")
+                        .allowedHeaders("*");
+            } else if ("local".equals(activeProfile)) {
+                // Configuración para el perfil "dev"
+                registry.addMapping("/**")
+                        .allowedOrigins("http://127.0.0.1:5500")
+                        .allowedMethods("GET")
+                        .allowedHeaders("*");
+            }
+        }
     }
-
-
 
 
 }
