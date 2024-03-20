@@ -2,36 +2,32 @@ package com.app.cliente.controller;
 
 import com.app.cliente.config.RestTemplateConfig;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.*;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.RequestEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.client.RestTemplate;
+
 import java.net.URI;
 import java.net.URISyntaxException;
 
-@RestController
-@RequestMapping("/rest")
-public class ClientRestController {
+@Controller
+@RequestMapping("/view")
+public class ClientController {
 
     @Autowired
     private RestTemplateConfig restConfig;
 
-
-    @GetMapping
-    public String getClientsFromServer() throws URISyntaxException {
+    @RequestMapping(method = RequestMethod.GET)
+    public String getClientsFromServerWithHTMLView(Model model) throws URISyntaxException {
         String url = "http://localhost:9090/api/v1/client";
-        // Crear la solicitud GET con las cabeceras configuradas
         RequestEntity<?> requestEntity = new RequestEntity<>(restConfig.headersWithOrigin(), HttpMethod.GET, new URI(url));
-        // Crear un objeto RestTemplate
         RestTemplate restTemplate = new RestTemplate();
-        // Hacer la solicitud GET y obtener la respuesta como un String
         String response = restTemplate.exchange(requestEntity, String.class).getBody();
-        // Retornar la respuesta
-        return response;
+        model.addAttribute("response", response);
+        return "views/clientView";
     }
-
-
-
-
-
 
 }

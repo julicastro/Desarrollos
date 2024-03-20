@@ -28,21 +28,18 @@ public class CorsConfig implements WebMvcConfigurer {
         String[] activeProfiles = environment.getActiveProfiles();
 
         if (activeProfiles.length > 0) {
-            String activeProfile = activeProfiles[0]; // Suponiendo que solo hay un perfil activo
+            String activeProfile = activeProfiles[0];
             if ("docker".equals(activeProfile)) {
-                // Configuración para el perfil "local"
-                registry.addMapping("/api/endpoint1")
-                        .allowedOrigins("http://client-app")
+                registry.addMapping("/**")
+                        .allowedOrigins("http://localhost:8081/view", "http://client-app")
                         .allowedMethods("GET", "POST")
                         .allowedHeaders("*");
             } else if ("dev".equals(activeProfile)) {
-                // Configuración para el perfil "dev"
                 registry.addMapping("/**")
                         .allowedOrigins("http://127.0.0.1:5500")
                         .allowedMethods("GET")
                         .allowedHeaders("*");
             } else if ("local".equals(activeProfile)) {
-                // Configuración para el perfil "dev"
                 registry.addMapping("/**")
                         .allowedOrigins("http://127.0.0.1:5500")
                         .allowedMethods("GET")
