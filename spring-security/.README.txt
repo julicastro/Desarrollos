@@ -1,0 +1,18 @@
+#Master Definitivo en Spring Security 6 JWT y OAuth2 (2024)
+
+![Spring Security](https://www.udemy.com/course/master-spring-security-6-jwt-y-oauth20/?couponCode=KEEPLEARNING)
+
+## Descripción
+
+- Componentes de seguridad personalizados en Spring Security 6.
+- Implementación de un esquema de seguridad de bases de datos.
+- Uso del estándar JWT para autenticación y autorización.
+- Métodos para vulnerar/hackear un JWT y cómo prevenirlo.
+- Firma criptográfica de JWT para garantizar su integridad.
+- Personalización del proceso de autorización desde una base de datos de seguridad.
+- Implementación del protocolo OAuth 2.0 para autenticación y autorización.
+- Creación de un sistema de login seguro utilizando OAuth 2.0 en tus aplicaciones.
+- Desarrollo de manejadores de excepciones de seguridad personalizados.
+- Uso de Docker para imágenes, contenedores, volúmenes y redes.
+- Utilización de Docker Compose.
+- División de aplicaciones en un Authorization Server y un Resource Server gracias a OAuth 2.0.
