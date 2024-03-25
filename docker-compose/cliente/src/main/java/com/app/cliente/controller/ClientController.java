@@ -22,7 +22,7 @@ public class ClientController {
 
     @RequestMapping(method = RequestMethod.GET)
     public String getClientsFromServerWithHTMLView(Model model) throws URISyntaxException {
-        String url = "http://localhost:6060/api/v1/client";
+        String url = "http://server-app:6060/api/v1/client";
         RequestEntity<?> requestEntity = new RequestEntity<>(restConfig.headersWithOrigin(), HttpMethod.GET, new URI(url));
         RestTemplate restTemplate = new RestTemplate();
         String response = restTemplate.exchange(requestEntity, String.class).getBody();

@@ -12,6 +12,7 @@ services:
       - mysql-volume:/var/lib/mysql
 
   server-app:
+    build: .
     image: server:v1
     ports:
       - 6060:9090
