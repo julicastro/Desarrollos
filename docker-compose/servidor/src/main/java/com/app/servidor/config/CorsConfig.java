@@ -31,7 +31,8 @@ public class CorsConfig implements WebMvcConfigurer {
             String activeProfile = activeProfiles[0];
             if ("docker".equals(activeProfile)) {
                 registry.addMapping("/**")
-                        .allowedOrigins("http://localhost:8081/view", "http://client-app")
+                        //.allowedOrigins("http://localhost:8686/**", "http://localhost:8686/view", "http://client-app")
+                        .allowedOrigins("*", "*/**")
                         .allowedMethods("GET", "POST")
                         .allowedHeaders("*");
             } else if ("dev".equals(activeProfile)) {

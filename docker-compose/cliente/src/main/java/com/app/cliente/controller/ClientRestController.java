@@ -18,7 +18,7 @@ public class ClientRestController {
 
     @GetMapping
     public String getClientsFromServer() throws URISyntaxException {
-        String url = "http://localhost:9090/api/v1/client";
+        String url = "http://localhost:6060/api/v1/client";
         // Crear la solicitud GET con las cabeceras configuradas
         RequestEntity<?> requestEntity = new RequestEntity<>(restConfig.headersWithOrigin(), HttpMethod.GET, new URI(url));
         // Crear un objeto RestTemplate

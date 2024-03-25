@@ -4,17 +4,15 @@ services:
 
   database:
     image: mysql
-    build: .
     environment:
       MYSQL_ROOT_PASSWORD: password
-      MYSQL_DATABASE: docker-practice
-    container_name: mysql-container
+      MYSQL_DATABASE: client
+    container_name: mysql-cont
     volumes:
       - mysql-volume:/var/lib/mysql
 
   server-app:
-    build: .
-    image: server
+    image: server:v1
     ports:
       - 6060:9090
     container_name: server-container
@@ -22,9 +20,9 @@ services:
       - database
 
   client-app:
-    build: .
+    image: client:v1
     ports:
-      - 7070:8080
+      - 8686:8081
     container_name: client-container
     depends_on:
       - server-app

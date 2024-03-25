@@ -24,7 +24,7 @@ services:
   client:
     image: my-client-app:v1
     ports:
-      - 8686:8080
+      - 8686:8081
     container_name: my-client-app-container
     depends_on:
       - my-app
