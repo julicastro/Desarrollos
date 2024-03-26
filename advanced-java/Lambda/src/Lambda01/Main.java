@@ -47,7 +47,7 @@ public class Main {
 
         System.out.println("El resultado de la operación es: " + resultado);
 
-        ParameterInterface example2 = (a, b) -> a + b; // la parte de a + b es la implementacion del método calculo. puede ser cualquier operacion
+        ParameterInterface example2 = (a, b) -> a + b; // la parte de "(a + b)" es la implementacion del método calculo. puede ser cualquier operacion
         int resultado2 = example2.calculo(5, 8);
         System.out.println(resultado2);
 
