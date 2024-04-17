@@ -36,15 +36,14 @@ public class ClientAppMapper {
                 .redirectUris(redirectUris ->
                         clientApp.getRedirectUris().stream().forEach(redirectUris::add))
                 .scopes(scopes -> clientApp.getScopes().stream().forEach(scopes::add))
-                .tokenSettings(TokenSettings.builder()
+                .tokenSettings(TokenSettings.builder() // config durabilidad de tokens para 1 cliente en específico
                         .accessTokenTimeToLive(Duration.ofMinutes(clientApp.getDurationInMinutes()))
                         .refreshTokenTimeToLive(Duration.ofMinutes(clientApp.getDurationInMinutes() * 4))
                         .build())
-                .clientSettings(ClientSettings.builder()
-                        .requireProofKey(clientApp.isRequiredProofKey())
+                .clientSettings(ClientSettings.builder() // q tipo de flujo sigue el cliente
+                        .requireProofKey(clientApp.isRequiredProofKey()) // depende true o false es uno u otro flujo
                         .build())
                 .build();
-
         return client;
     }
 

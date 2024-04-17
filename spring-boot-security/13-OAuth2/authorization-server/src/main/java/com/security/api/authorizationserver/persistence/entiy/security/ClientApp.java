@@ -30,6 +30,10 @@ public class ClientApp {
     @ElementCollection(fetch = FetchType.EAGER)
     private List<String> scopes;
 
+    private int durationInMinutes;
+
+    private boolean requiredProofKey;
+
     public Long getId() {
         return id;
     }
@@ -84,5 +88,21 @@ public class ClientApp {
 
     public void setScopes(List<String> scopes) {
         this.scopes = scopes;
+    }
+
+    public int getDurationInMinutes() {
+        return durationInMinutes;
+    }
+
+    public void setDurationInMinutes(int durationInMinutes) {
+        this.durationInMinutes = durationInMinutes;
+    }
+
+    public boolean isRequiredProofKey() {
+        return requiredProofKey;
+    }
+
+    public void setRequiredProofKey(boolean requiredProofKey) {
+        this.requiredProofKey = requiredProofKey;
     }
 }
