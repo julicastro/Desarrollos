@@ -20,10 +20,14 @@ public class SecurityBeansInjector {
     @Autowired
     private UserRepository userRepository;
 
+    /*
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
         return authenticationConfiguration.getAuthenticationManager();
     }
+    YA NO ES NECESARIO INYECTARLO YA Q OAUTH2 LO HACE AUTOMATICAMENTE.
+
+     */
 
     @Bean
     public AuthenticationProvider authenticationProvider(){

@@ -10,4 +10,6 @@ public class AuthorizationServerApplication {
 		SpringApplication.run(AuthorizationServerApplication.class, args);
 	}
 
+	// client-app -> password = secret
+
 }

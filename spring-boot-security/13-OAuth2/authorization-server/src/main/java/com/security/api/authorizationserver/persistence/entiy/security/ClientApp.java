@@ -18,7 +18,7 @@ public class ClientApp {
 
     private String clientSecret; // contraseña del cliente
 
-    @ElementCollection(fetch = FetchType.EAGER)
+    @ElementCollection(fetch = FetchType.EAGER) /* crea la tabla de 1 a N con esta @annotation con la nomenclatura a_b_c pero antes les concatena client_app al principio */
     private List<String> clientAuthenticationMethods;
 
     @ElementCollection(fetch = FetchType.EAGER)
