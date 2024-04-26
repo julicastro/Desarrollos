@@ -4,7 +4,8 @@ import jakarta.persistence.*;
 
 import java.util.Date;
 
-// @Entity ya no se usa. ahora se usa otra forma de operar con JWE. ver customAuthorizationManager
+// ELIMINAR ENTIDAD. NO SIRVE
+@Entity // ya no se usa. ahora se usa otra forma de operar con JWE. ver customAuthorizationManager.
 public class JwtToken {
 
     @Id

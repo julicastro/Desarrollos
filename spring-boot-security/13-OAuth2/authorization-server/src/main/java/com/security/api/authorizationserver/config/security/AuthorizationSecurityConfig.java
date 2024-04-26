@@ -90,7 +90,7 @@ public class AuthorizationSecurityConfig {
     @Bean
     public AuthorizationServerSettings authorizationServerSettings() {
         return AuthorizationServerSettings.builder()
-                .issuer("http://localhost:9595//authorization-server") // esto es QUIEN GENERÓ LOS TOKEN. ISSUER = FIRMANTE
+                .issuer("http://localhost:9595/authorization-server") // esto es QUIEN GENERÓ LOS TOKEN. ISSUER = FIRMANTE
                 // SE AGREGA UN CLAIM AL FIRMAR Q SE LLAMA ISSUER Y TE DICE QUIEN GENERÓ EL TOQUEN
                 .build();
     }

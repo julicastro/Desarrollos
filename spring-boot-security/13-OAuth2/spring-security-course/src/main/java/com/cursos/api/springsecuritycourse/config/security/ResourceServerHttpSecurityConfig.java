@@ -19,7 +19,6 @@ import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.access.intercept.RequestAuthorizationContext;
-ximport org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter;
 
 import static org.springframework.security.config.Customizer.withDefaults;
 
@@ -31,8 +30,8 @@ public class ResourceServerHttpSecurityConfig {
     @Autowired
     private AuthenticationProvider daoAuthProvider;
 
-    @Autowired
-    private JwtAuthenticationFilter jwtAuthenticationFilter;
+    //@Autowired
+    //private JwtAuthenticationFilter jwtAuthenticationFilter;
 
     @Autowired
     private AuthenticationEntryPoint authenticationEntryPoint;

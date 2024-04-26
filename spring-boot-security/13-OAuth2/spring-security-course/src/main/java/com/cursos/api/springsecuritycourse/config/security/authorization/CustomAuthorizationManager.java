@@ -8,12 +8,14 @@ import com.cursos.api.springsecuritycourse.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.authorization.AuthorizationDecision;
 import org.springframework.security.authorization.AuthorizationManager;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.oauth2.jwt.Jwt;
+import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 import org.springframework.security.web.access.intercept.RequestAuthorizationContext;
 import org.springframework.stereotype.Component;
+import java.util.ArrayList;
 
 import java.util.List;
 import java.util.function.Predicate;
@@ -51,7 +53,7 @@ public class CustomAuthorizationManager implements AuthorizationManager<RequestA
 
     private boolean isGranted(String url, String httpMethod, Authentication authentication) {
 
-        if( authentication == null || !(authentication instanceof UsernamePasswordAuthenticationToken)){
+        if( authentication == null || !(authentication instanceof JwtAuthenticationToken)){
             throw new AuthenticationCredentialsNotFoundException("User not logged in");
         }
 
@@ -77,15 +79,43 @@ public class CustomAuthorizationManager implements AuthorizationManager<RequestA
 
     private List<Operation> obtainOperations(Authentication authentication) {
 
-        UsernamePasswordAuthenticationToken authToken = (UsernamePasswordAuthenticationToken) authentication;
-        String username = (String) authToken.getPrincipal();
+        JwtAuthenticationToken authToken = (JwtAuthenticationToken) authentication;
+
+        Jwt jwt = authToken.getToken();
+        String username = jwt.getSubject();
+
+
         User user = userService.findOneByUsername(username)
                 .orElseThrow(() -> new ObjectNotFoundException("User not found. Username: " + username));
 
-        return user.getRole().getPermissions().stream()
+        List<Operation> operations = user.getRole().getPermissions().stream()
                 .map(grantedPermission -> grantedPermission.getOperation())
                 .collect(Collectors.toList());
 
+        List<String> scopes = extractScopes(jwt);
+
+        if(!scopes.contains("ALL")){
+            /* al obtener los scopes valido q el usuario con el q me logie tenga ese scope
+            * en caso de no tener scope no lo dejo pasar aunque el user si tenga ese permiso,
+            * deben hacer match de los scopes con los authorities */
+            operations = operations.stream()
+                    .filter(operation -> scopes.contains(operation.getName()))
+                    .collect(Collectors.toList()); // convertir resultado a lista
+        }
+
+        return operations; // operaciones son los authorities a los q un role especifico tiene acceso.
+    }
+
+    private List<String> extractScopes(Jwt jwt) {
+
+        List<String> scopes = new ArrayList<>();
+        try{
+            scopes = (List<String>) jwt.getClaims().get("scope"); // lo llamamos con el name scope en el Access Token. Asi lo agrega el Authorization Manager x default
+        }catch (Exception exception){
+            System.out.println("Hubo un problema al extraer los scopes del cliente");
+        }
+
+        return scopes;
     }
 
     private boolean isPublic(String url, String httpMethod) {
