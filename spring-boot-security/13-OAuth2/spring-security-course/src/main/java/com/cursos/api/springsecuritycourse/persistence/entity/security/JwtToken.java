@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 
 import java.util.Date;
 
-@Entity
+// @Entity ya no se usa. ahora se usa otra forma de operar con JWE. ver customAuthorizationManager
 public class JwtToken {
 
     @Id
