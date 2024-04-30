@@ -1,4 +1,4 @@
-package Lambda01;
+package LambdaFunctions.Interfaces;
 
 public interface ParameterInterface {
 
