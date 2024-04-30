@@ -6,11 +6,11 @@ import LambdaFunctions.Interfaces.Interfaz;
 import LambdaFunctions.Interfaces.ParameterInterface;
 
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
-import java.util.function.BiPredicate;
-import java.util.function.Predicate;
-import java.util.function.Supplier;
+import java.util.function.*;
 
 public class LambdaFunctions {
 
@@ -53,6 +53,7 @@ public class LambdaFunctions {
     }
 
     public static void predicate() {
+        // metodo test q devuelve booleano
         List<Integer> numeros = Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
 
         // Definimos un Predicate para verificar si un número es par
@@ -103,6 +104,7 @@ public class LambdaFunctions {
     }
 
     public static void supplier(){
+        // get();
         /* sirve para cualquier objeto. su único método get() devuelve lo q nosotros especifiquemos en la impl */
         Supplier<StringBuilder> supSB = StringBuilder::new; // StringBuilder::new == new StringBuilder();
         System.out.println("Supplier SB: " + supSB.get().append("SK")); // ::new hace referencia al constructor. x ende sirve para instanciar
@@ -114,14 +116,53 @@ public class LambdaFunctions {
         System.out.println(sRandowm.get());
 
         // en resument Supplier ejecuta lo q está dsp del "=" con su método get();
+        // get no recibe argumento y devuelve un resultado
     }
 
-    public static void consumerAndBiConsumer(){
+    public static void consumer(){
+        /* ser o no ser */
+        /* recibe argumento y no devuelve resultado. */
+        /* accept(T t)*/
+        Consumer<String> printC = s -> System.out.println(s);
+        printC.accept("Accept() Requiere un Argumento Pero Get() no");
+        // muy util para iterar e imprimir contenido
+        List<String> names = new ArrayList<>();
+        names.add("John");
+        names.add("Frusciante");
+        names.forEach(printC); // este forEach pertence a la clase Iterable y recibe un Consumer. aplica Accept(T t) a cada elemento de la iteración
+
+        List<String> names2 = new ArrayList<>();
+        names2.add("Red");
+        names2.add("Hot");
+        names2.forEach(u -> System.out.println(u)); // compilador entiende q es un consumer x el contexto. x más q no se lo indique explicitamente
+    }
+
+    public static void biConsumer(){
+        // void accept(T t, U, u) -> clave valor
+        // MUY UTIL PARA LOS MAPS
+        var mapCapitalCities = new HashMap<String, String>();
+        BiConsumer<String, String> biCon = (key, value) -> mapCapitalCities.put(key, value); // si bien accept no tiene return, este .put tiene.
+        // le estamos indicando q el metodo accept va a agregar un valor al map mapCapitalCities
+        biCon.accept("Argentina", "Buenos Aires");
+        biCon.accept("Irlanda", "McGregor");
+        // System.out.println(mapCapitalCities); // Argentina=Buenos Aires, Irlanda=McGregor
+
+        BiConsumer<String, String> mapPrint = (k, v) -> System.out.println(k + " is the capital of: " + v);
+        // mapCapitalCities.forEach((k, v) -> System.out.println(k + " is the capital of: " + v)); // map tiene este metodo forEach q recibe un BiConsumer
+        mapCapitalCities.forEach(mapPrint);
+    }
+
+    public static void function(){
+
+    }
+
+    public static void biFunction(){
 
     }
 
     public static void main(String[] args) {
-        consumerAndBiConsumer();
+        biConsumer();
+
     }
 
 
