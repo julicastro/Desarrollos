@@ -1,0 +1,26 @@
+INSERT INTO "user" (username, password, role) VALUES ('lmarquez', '$2a$10$VcrbJGyR9nuhse9CQb03W.86CpT2IRuZFeZw9z9rFmniNaeu36lOO', 'USER');
+
+INSERT INTO team (name, league, country) VALUES ('Real Madrid', 'La Liga', 'España');
+INSERT INTO team (name, league, country) VALUES ('FC Barcelona', 'La Liga', 'España');
+INSERT INTO team (name, league, country) VALUES ('Manchester United', 'Premier League', 'Inglaterra');
+INSERT INTO team (name, league, country) VALUES ('Liverpool FC', 'Premier League', 'Inglaterra');
+INSERT INTO team (name, league, country) VALUES ('Juventus FC', 'Serie A', 'Italia');
+INSERT INTO team (name, league, country) VALUES ('AC Milan', 'Serie A', 'Italia');
+INSERT INTO team (name, league, country) VALUES ('Bayern Munich', 'Bundesliga', 'Alemania');
+INSERT INTO team (name, league, country) VALUES ('Borussia Dortmund', 'Bundesliga', 'Alemania');
+INSERT INTO team (name, league, country) VALUES ('Paris Saint-Germain', 'Ligue 1', 'Francia');
+INSERT INTO team (name, league, country) VALUES ('Olympique de Marseille', 'Ligue 1', 'Francia');
+INSERT INTO team (name, league, country) VALUES ('FC Porto', 'Primeira Liga', 'Portugal');
+INSERT INTO team (name, league, country) VALUES ('Sporting CP', 'Primeira Liga', 'Portugal');
+INSERT INTO team (name, league, country) VALUES ('Ajax Amsterdam', 'Eredivisie', 'Países Bajos');
+INSERT INTO team (name, league, country) VALUES ('Feyenoord', 'Eredivisie', 'Países Bajos');
+INSERT INTO team (name, league, country) VALUES ('Celtic FC', 'Scottish Premiership', 'Escocia');
+INSERT INTO team (name, league, country) VALUES ('Rangers FC', 'Scottish Premiership', 'Escocia');
+INSERT INTO team (name, league, country) VALUES ('Galatasaray SK', 'Süper Lig', 'Turquía');
+INSERT INTO team (name, league, country) VALUES ('Fenerbahçe SK', 'Süper Lig', 'Turquía');
+INSERT INTO team (name, league, country) VALUES ('FC Zenit Saint Petersburg', 'Premier League Rusa', 'Rusia');
+INSERT INTO team (name, league, country) VALUES ('Spartak Moscow', 'Premier League Rusa', 'Rusia');
+INSERT INTO team (name, league, country) VALUES ('SL Benfica', 'Primeira Liga', 'Portugal');
+INSERT INTO team (name, league, country) VALUES ('Besiktas JK', 'Süper Lig', 'Turquía');
+INSERT INTO team (name, league, country) VALUES ('SSC Napoli', 'Serie A', 'Italia');
+INSERT INTO team (name, league, country) VALUES ('Atlético Madrid', 'La Liga', 'España');
