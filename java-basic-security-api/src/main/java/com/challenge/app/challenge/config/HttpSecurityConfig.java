@@ -41,7 +41,8 @@ public class HttpSecurityConfig {
 
     private static void buildRequestMatchers(
             AuthorizeHttpRequestsConfigurer<HttpSecurity>.AuthorizationManagerRequestMatcherRegistry authReqConfig) {
-        authReqConfig.requestMatchers("/teams", "/teams/**").hasAnyRole(Role.USER.name());
+        authReqConfig.requestMatchers("/equipos", "/equipos/**").hasAnyRole(Role.USER.name());
+        authReqConfig.requestMatchers("/v3/api-docs/**", "/swagger-ui.html", "/swagger-ui/**").permitAll();
         authReqConfig.requestMatchers(HttpMethod.GET, "/auth/validate-token").permitAll();
         authReqConfig.requestMatchers(HttpMethod.POST, "/auth/login").permitAll();
         authReqConfig.anyRequest().authenticated();

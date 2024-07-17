@@ -47,6 +47,15 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(apiError);
     }
 
+    @ExceptionHandler(CanNotLoginException.class)
+    public ResponseEntity<?> handlerObjectNotFoundException(HttpServletRequest request, CanNotLoginException exception) {
+        ApiError apiError = new ApiError();
+        apiError.setMessage(exception.getLocalizedMessage());
+        apiError.setCode(HttpStatus.UNAUTHORIZED.value());
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(apiError);
+    }
+
+
 
 
 

@@ -2,14 +2,13 @@ package com.challenge.app.challenge.service.auth;
 
 import com.challenge.app.challenge.dto.auth.AuthenticationRequest;
 import com.challenge.app.challenge.dto.auth.AuthenticationResponse;
-import com.challenge.app.challenge.exception.ObjectNotFoundException;
+import com.challenge.app.challenge.exception.CanNotLoginException;
 import com.challenge.app.challenge.perseistence.entity.User;
 import com.challenge.app.challenge.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
@@ -36,13 +35,18 @@ public class AuthenticationService {
     }
 
     public AuthenticationResponse login(AuthenticationRequest autRequest) {
-        Authentication authentication = new UsernamePasswordAuthenticationToken(
-                autRequest.getUsername(), autRequest.getPassword());
-        authenticationManager.authenticate(authentication);
-        UserDetails user = userService.findOneByUsername(autRequest.getUsername()).get();
-        String jwt = jwtService.generateToken(user, generateExtraClaims((User) user));
-        AuthenticationResponse authRsp = new AuthenticationResponse();
-        authRsp.setJwt(jwt);
+        AuthenticationResponse authRsp;
+        try {
+            Authentication authentication = new UsernamePasswordAuthenticationToken(
+                    autRequest.getUsername(), autRequest.getPassword());
+            authenticationManager.authenticate(authentication);
+            UserDetails user = userService.findOneByUsername(autRequest.getUsername()).get();
+            String jwt = jwtService.generateToken(user, generateExtraClaims((User) user));
+            authRsp = new AuthenticationResponse();
+            authRsp.setJwt(jwt);
+        } catch (Exception e) {
+            throw new CanNotLoginException("Usuario y o password incorrectos");
+        }
         return authRsp;
     }
 
@@ -56,11 +60,4 @@ public class AuthenticationService {
         }
     }
 
-    public User findLoggedInUser() {
-        UsernamePasswordAuthenticationToken auth = (UsernamePasswordAuthenticationToken) SecurityContextHolder
-                .getContext().getAuthentication();
-        String username = (String) auth.getPrincipal();
-        return userService.findOneByUsername(username)
-                .orElseThrow(() -> new ObjectNotFoundException("User not found. Username: " + username));
-    }
 }
