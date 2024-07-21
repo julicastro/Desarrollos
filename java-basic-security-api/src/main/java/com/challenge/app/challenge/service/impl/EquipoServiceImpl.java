@@ -17,29 +17,39 @@ public class EquipoServiceImpl implements EquipoService {
 
     @Override
     public Equipo createOne(EquipoDto dto) {
-        Equipo team = new Equipo();
-        return teamMapper(dto, team);
+        Equipo equipo = new Equipo();
+        return teamMapper(dto, equipo);
+    }
+
+    @Override
+    public Equipo findOneById(Long id) {
+        Equipo equipo = equipoRepository.findById(id).orElseThrow(() -> new TeamNotFoundException("Equipo no encontrado"));
+        return equipo;
     }
 
     @Override
     public Equipo updateOneById(Long id, EquipoDto dto) {
-        Equipo team = equipoRepository.findById(id).orElseThrow(() -> new TeamNotFoundException("Equipo no encontrado"));
-        return teamMapper (dto, team);
+        Equipo equipo = findOneById(id);
+        return teamMapper(dto, equipo);
     }
 
-    private Equipo teamMapper(EquipoDto dto, Equipo team) {
-        team.setNombre(dto.getNombre());
-        team.setLiga(dto.getLiga());
-        team.setPais(dto.getPais());
+    private Equipo teamMapper(EquipoDto dto, Equipo equipo) {
+        equipo.setNombre(dto.getNombre());
+        equipo.setLiga(dto.getLiga());
+        equipo.setPais(dto.getPais());
         try {
-            equipoRepository.save(team);
+            equipoRepository.save(equipo);
         } catch (Exception e) {
             throw new TeamNotSavedException("La solicitud es inválida");
         }
-        return team;
+        return equipo;
     }
 
-
+    @Override
+    public void deleteOneById(Long id) {
+        Equipo equipo = findOneById(id);
+        equipoRepository.delete(equipo);
+    }
 
 
 }

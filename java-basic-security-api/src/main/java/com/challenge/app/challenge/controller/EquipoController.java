@@ -1,7 +1,6 @@
 package com.challenge.app.challenge.controller;
 
 import com.challenge.app.challenge.dto.EquipoDto;
-import com.challenge.app.challenge.exception.TeamNotFoundException;
 import com.challenge.app.challenge.perseistence.entity.Equipo;
 import com.challenge.app.challenge.perseistence.repository.EquipoRepository;
 import com.challenge.app.challenge.service.EquipoService;
@@ -18,6 +17,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/equipos")
@@ -54,9 +55,9 @@ public class EquipoController {
             @ApiResponse(responseCode = "404", description = "Equipo no encontrado.", content = {@Content(schema = @Schema())})
     })
     @GetMapping("/{id}")
-    public ResponseEntity<Object> findOneById(@PathVariable Long id) {
-        Equipo team = equipoRepository.findById(id).orElseThrow(() -> new TeamNotFoundException("Equipo no encontrado"));
-        return ResponseEntity.ok(team);
+    public ResponseEntity<Equipo> findOneById(@PathVariable Long id) {
+        Equipo equipo = equipoService.findOneById(id);
+        return ResponseEntity.ok(equipo);
     }
 
     @Operation(
@@ -110,8 +111,7 @@ public class EquipoController {
     })
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteOne(@PathVariable Long id) {
-        Equipo equipo = equipoRepository.findById(id).orElseThrow(() -> new TeamNotFoundException("Equipo no encontrado"));
-        equipoRepository.delete(equipo);
+        equipoService.deleteOneById(id);
         return ResponseEntity.noContent().build();
     }
 

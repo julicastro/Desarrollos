@@ -4,20 +4,19 @@ import com.challenge.app.challenge.dto.EquipoDto;
 import com.challenge.app.challenge.exception.TeamNotFoundException;
 import com.challenge.app.challenge.exception.TeamNotSavedException;
 import com.challenge.app.challenge.perseistence.entity.Equipo;
-import com.challenge.app.challenge.perseistence.entity.User;
 import com.challenge.app.challenge.perseistence.repository.EquipoRepository;
-import com.challenge.app.challenge.perseistence.util.Role;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
+@ExtendWith(MockitoExtension.class)
 class EquipoServiceImplTest {
 
     @Mock
@@ -26,28 +25,21 @@ class EquipoServiceImplTest {
     @InjectMocks
     private EquipoServiceImpl equipoService;
 
-    private User testUser;
-
-    @BeforeEach
-    void setUp() {
-        MockitoAnnotations.openMocks(this);
-    }
-
     @Test
-    void createOne_shouldCreateNewTeam() {
+    void shouldCreateANewEquipo_createOne() {
         EquipoDto dto = new EquipoDto();
-        dto.setNombre("Equipo Test");
-        dto.setLiga("Liga Test");
-        dto.setPais("País Test");
+        dto.setNombre("Test");
+        dto.setLiga("Test");
+        dto.setPais("Test");
 
         Equipo equipoGuardado = new Equipo();
-        equipoGuardado.setNombre("Equipo Test");
-        equipoGuardado.setLiga("Liga Test");
-        equipoGuardado.setPais("País Test");
+        equipoGuardado.setNombre("Test");
+        equipoGuardado.setLiga("Test");
+        equipoGuardado.setPais("Test");
 
         when(equipoRepository.save(any(Equipo.class))).thenAnswer(invocation -> {
             Equipo equipo = invocation.getArgument(0);
-            equipo.setId(1L); /* simulo un repositorio real que asigna manualmente un ID */
+            equipo.setId(1L);
             return equipo;
         });
 
@@ -55,41 +47,38 @@ class EquipoServiceImplTest {
 
         assertNotNull(result);
         assertEquals(1L, result.getId());
-        assertEquals("Equipo Test", result.getNombre());
+        assertEquals("Test", result.getNombre());
 
         verify(equipoRepository, times(1)).save(any(Equipo.class));
     }
 
     @Test
-    void createOne_shouldThrowTeamNotSavedException() {
+    void shouldThrowTeamNotSavedException_createOne() {
         EquipoDto dto = new EquipoDto();
-        /* lleno los datos para que no salten las validaciones */
         dto.setNombre("Test");
         dto.setLiga("Test");
         dto.setPais("Test");
 
-        when(equipoRepository.save(any(Equipo.class))).thenThrow(new RuntimeException("Error al guardar"));
-
+        when(equipoRepository.save(any(Equipo.class))).thenThrow(new RuntimeException("La operación es inválida"));
         assertThrows(TeamNotSavedException.class, () -> equipoService.createOne(dto));
     }
 
-    /*
-
     @Test
-    void updateOneById_shouldUpdateExistingTeam() {
+    void shouldUpdateAEquipo_updateOneExistentEquipo() {
         Long id = 1L;
+
         EquipoDto dto = new EquipoDto();
         dto.setNombre("Nuevo Nombre");
         dto.setLiga("Nueva Liga");
         dto.setPais("Nuevo País");
 
-        Equipo existingTeam = new Equipo();
-        existingTeam.setId(id);
-        existingTeam.setNombre("Equipo Antiguo");
-        existingTeam.setLiga("Liga Antigua");
-        existingTeam.setPais("País Antiguo");
+        Equipo equipoFromBD = new Equipo();
+        equipoFromBD.setId(id);
+        equipoFromBD.setNombre("Viejo Nombre");
+        equipoFromBD.setLiga("Vieja Liga");
+        equipoFromBD.setPais("Viejo País");
 
-        when(equipoRepository.findById(id)).thenReturn(Optional.of(existingTeam));
+        when(equipoRepository.findById(id)).thenReturn(Optional.of(equipoFromBD));
         when(equipoRepository.save(any(Equipo.class))).thenAnswer(invocation -> invocation.getArgument(0));
 
         Equipo result = equipoService.updateOneById(id, dto);
@@ -105,14 +94,21 @@ class EquipoServiceImplTest {
     }
 
     @Test
-    void updateOneById_shouldThrowTeamNotFoundException() {
+    void shouldThrowTeamNotFoundException_updateOneNonExistentEquipo() {
         Long id = 1L;
         EquipoDto dto = new EquipoDto();
 
         when(equipoRepository.findById(id)).thenReturn(Optional.empty());
-
         assertThrows(TeamNotFoundException.class, () -> equipoService.updateOneById(id, dto));
     }
 
-    */
+
+    @Test
+    void shouldThrowTeamNotFoundException_deleteOneNonExistentEquipo() {
+        Long id = 1L;
+        when(equipoRepository.findById(id)).thenReturn(Optional.empty());
+        assertThrows(TeamNotFoundException.class, () -> equipoService.deleteOneById(id));
+        verify(equipoRepository, never()).deleteById(id);
+    }
+
 }
