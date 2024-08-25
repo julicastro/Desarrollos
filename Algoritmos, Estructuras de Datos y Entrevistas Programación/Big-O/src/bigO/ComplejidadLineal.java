@@ -8,7 +8,7 @@ public class ComplejidadLineal {
      */
 
     public static void main(String[] args) {
-        int [] array = {15, 44, 23, 12};
+        int [] array = {15, 44, 23, 12}; // N
         reverseArray(array);
         for (int i = 0; i < array.length; i++) {
             System.out.println(array[i] + " ");
