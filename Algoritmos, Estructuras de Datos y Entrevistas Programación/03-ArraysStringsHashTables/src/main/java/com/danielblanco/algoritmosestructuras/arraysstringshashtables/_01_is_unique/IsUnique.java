@@ -11,18 +11,20 @@ import java.util.Map;
  */
 public class IsUnique {
 
-  public boolean isUnique(String s) {
-    Map<Integer, Character> map = new HashMap<>();
-    for (int i = 0; i < s.length(); i++) {
-
+    public static void main(String[] args) {
+        System.out.println(isUnique("asdfafg"));
     }
 
-
-
-    throw new UnsupportedOperationException("Not implemented yet");
-  }
-
-
+    public static boolean isUnique(String s) {
+        Map<Integer, Character> map = new HashMap<>();
+        boolean isUnique = true;
+        for (int i = 0; i < s.length(); i++) {
+            if (map.containsValue(s.charAt(i)))
+                return false;
+            map.put(i, s.charAt(i));
+        }
+        return isUnique;
+    }
 
 
 }

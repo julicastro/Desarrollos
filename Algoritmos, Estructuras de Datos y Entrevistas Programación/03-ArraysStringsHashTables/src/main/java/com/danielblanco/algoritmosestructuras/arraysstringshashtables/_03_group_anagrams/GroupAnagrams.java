@@ -1,6 +1,6 @@
 package com.danielblanco.algoritmosestructuras.arraysstringshashtables._03_group_anagrams;
 
-import java.util.List;
+import java.util.*;
 
 /*
  * Un anagrama es una palabra creada a partir de la reordenación de las letras de otra palabra. Ej: saco - caso
@@ -12,7 +12,14 @@ import java.util.List;
  */
 public class GroupAnagrams {
 
-  public List<List<String>> groupAnagrams(String[] words) {
-    throw new UnsupportedOperationException("Not implemented yet");
+  public static void main(String[] args) {
+    String [] strings = {"saco", "arresto", "programa", "rastreo", "caso"};
+    groupAnagrams(strings);
   }
+
+  public static List<List<String>> groupAnagrams(String[] words) {
+
+  }
+
+
 }

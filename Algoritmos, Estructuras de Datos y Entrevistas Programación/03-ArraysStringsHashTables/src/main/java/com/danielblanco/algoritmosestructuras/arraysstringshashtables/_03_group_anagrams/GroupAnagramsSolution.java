@@ -21,7 +21,7 @@ public class GroupAnagramsSolution {
     if (strs == null || strs.length == 0) return Collections.emptyList();
 
     Map<String, List<String>> anagramMap = buildAnagramMap(strs);
-    return new ArrayList<>(anagramMap.values());
+    return new ArrayList<>(anagramMap.values()); // este .values devuelve todos los values del map. List <String>
   }
 
   private Map<String, List<String>> buildAnagramMap(String[] strs) {
@@ -31,7 +31,6 @@ public class GroupAnagramsSolution {
       if (!anagramMap.containsKey(hash)) {
         anagramMap.put(hash, new ArrayList<String>());
       }
-
       anagramMap.get(hash).add(s);
     }
 
