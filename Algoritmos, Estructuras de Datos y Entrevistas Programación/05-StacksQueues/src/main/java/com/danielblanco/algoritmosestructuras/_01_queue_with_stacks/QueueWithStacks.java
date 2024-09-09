@@ -15,26 +15,36 @@ import java.util.Deque;
  * https://stackoverflow.com/questions/12524826/why-should-i-use-deque-over-stack
  */
 public class QueueWithStacks {
-  Deque<Integer> firstStack = new ArrayDeque<>();
-  Deque<Integer> secondStack = new ArrayDeque<>();
+    Deque<Integer> firstStack = new ArrayDeque<>();
+    Deque<Integer> secondStack = new ArrayDeque<>();
 
-  public void add(Integer value) {
-    throw new UnsupportedOperationException("Not implemented yet");
-  }
+    public void add(Integer value) {
+        firstStack.push(value);
+    }
 
-  public Integer peek() {
-    throw new UnsupportedOperationException("Not implemented yet");
-  }
+    public Integer peek() {
+        volvarElementosDeCola();
+        return secondStack.peek();
+    }
 
-  public Integer remove() {
-    throw new UnsupportedOperationException("Not implemented yet");
-  }
+    public Integer remove() {
+        volvarElementosDeCola();
+        return secondStack.pop();
+    }
 
-  public boolean isEmpty() {
-    throw new UnsupportedOperationException("Not implemented yet");
-  }
+    public void volvarElementosDeCola(){
+        if (secondStack.isEmpty()) {
+            while (!firstStack.isEmpty()) {
+                secondStack.push(firstStack.pop());
+            }
+        }
+    }
 
-  public int size() {
-    throw new UnsupportedOperationException("Not implemented yet");
-  }
+    public boolean isEmpty() {
+        return size() == 0;
+    }
+
+    public int size() {
+        return firstStack.size() + secondStack.size();
+    }
 }
